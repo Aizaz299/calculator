@@ -10,7 +10,7 @@ import Foundation
 class Calculator: ObservableObject{
    //******properties*******
     //used to upade the UI
-    @Published var  displayValue  = "0" //redrawn when its varibale value is changed
+    @Published var  displayValue  = "4" //redrawn when its varibale value is changed
     
     // store current operator
     var currentOp: Operator?
@@ -35,7 +35,8 @@ class Calculator: ObservableObject{
     func buttonPressed(label:String){
         if label == "CE"
         {
-            
+            displayValue = "0"
+            reset()
         }
         else if label == "="{
             equlesClicked()
@@ -52,9 +53,13 @@ class Calculator: ObservableObject{
         }
 
     }
-    
+    // restets the state of the calculator
     func reset(){
-        
+        currentOp = nil
+        currentNumber = 0
+        previousNumber = nil
+        equaled = false
+        decimalPlace = 0
         
     }
     
