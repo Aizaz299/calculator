@@ -74,10 +74,44 @@ class Calculator: ObservableObject{
         decimalPlace = 0
         
     }
+    // returns true if division by o could happen
+    
+    func checkForDivision() -> Bool {
+        if currentOp!.isDivison && (currentNumber == nil && previousNumber == 0 || currentNumber == 0)
+        {
+            displayValue = "Error"
+            reset()
+            return true
+        }
+        return false
+    }
     
     func equlesClicked(){
-        
-    }
+        //check if we have opration to perfprm
+        if currentOp != nil{
+            //reset the decimal place for the current number
+        decimalPlace = 0
+       //Gaurd for division by 0
+            if checkForDivision() {return }
+            //check if we have al least one operand
+            if currentNumber != nil || previousNumber != nil{
+                //compute the total (optional un-chaining)
+                let total = currentOp!.op(previousNumber ?? currentNumber!, currentNumber ?? previousNumber!)
+                //update the first oprand
+                if currentNumber == nil {
+                    currentNumber = previousNumber
+                }
+                //update the second operand
+                previousNumber = total
+                // set equaled flag
+                equaled = true
+                
+                //update the ui
+                setDusplayValue(number: total)
+            }
+            
+        }
+        }
     
     
     func decimalClicked(){
@@ -124,6 +158,7 @@ class Calculator: ObservableObject{
         }
         //if we have 2 oprands compute them
         if currentNumber != nil && previousNumber != nil{
+            if checkForDivision(){return} // iff divide by 0 it will return
             let total = currentOp!.op(previousNumber!, currentNumber!)
             previousNumber = total
             currentNumber = nil
