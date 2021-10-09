@@ -13,13 +13,14 @@ let darkerGray = Color(CGColor(gray: 0.1, alpha: 1))
 
 let darkGray = Color(CGColor(gray: 0.3, alpha: 1))
 struct CalculatorHome: View {
+    @EnvironmentObject var calculator: Calculator
     
     var body: some View{
         GeometryReader{ geometry in
                 VStack(alignment: .trailing, spacing: 0) {
                         Spacer()
                         //display the curreny value
-                        Text("0")
+                    Text(calculator.displayValue)
                             .foregroundColor(.white)
                             .font(.system(size: 40))
                             .lineLimit(1)
@@ -45,5 +46,6 @@ struct CalculatorHome: View {
 struct CalculatorHome_Previews: PreviewProvider {
     static var previews: some View {
         CalculatorHome()
+            .environmentObject(Calculator())
     }
 }
