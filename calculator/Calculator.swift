@@ -10,7 +10,7 @@ import Foundation
 class Calculator: ObservableObject{
    //******properties*******
     //used to upade the UI
-    @Published var  displayValue  = "4" //redrawn when its varibale value is changed
+    @Published var  displayValue  = "0" //redrawn when its varibale value is changed
     
     // store current operator
     var currentOp: Operator?
@@ -49,7 +49,7 @@ class Calculator: ObservableObject{
             
         }
         else{
-            operatorPressed(op: Operator())
+            operatorPressed(op: Operator(label))
         }
 
     }
@@ -115,8 +115,29 @@ class Calculator: ObservableObject{
     }
     
     func operatorPressed(op: Operator){
-        
-        
+        //reset decimal
+        decimalPlace = 0
+        //if equals was presses , reste the current number
+        if equaled{
+            currentNumber = nil
+            equaled = false
+        }
+        //if we have 2 oprands compute them
+        if currentNumber != nil && previousNumber != nil{
+            let total = currentOp!.op(previousNumber!, currentNumber!)
+            previousNumber = total
+            currentNumber = nil
+            
+            //ui update
+            setDusplayValue(number: total)
+            
+            //if only 1 number was given, move it to the previous operand
+            
+        } else if previousNumber == nil {
+            previousNumber = currentNumber
+            currentNumber = nil
+        }
+    currentOp = op
     }
     
     
