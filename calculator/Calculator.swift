@@ -53,6 +53,18 @@ class Calculator: ObservableObject{
         }
 
     }
+    func setDusplayValue(number:Double){
+        //dont dipslay decimal if number is integer
+        if number == floor(number){
+        displayValue = "\(Int(number))"
+        }
+        else{
+            let decimalPlaces = 10
+            displayValue = "\(round(number * pow(10, decimalPlaces)) / pow(10, decimalPlaces))"
+        }
+        
+    }
+    
     // restets the state of the calculator
     func reset(){
         currentOp = nil
@@ -73,6 +85,32 @@ class Calculator: ObservableObject{
     }
     
     func numberPressed(value:Double){
+        // if equaled was pressed, clear the current numbers
+        if equaled{
+            currentNumber = nil
+            previousNumber = nil
+            equaled = false
+        }
+        //if there is no current number set ot to the value
+        if(currentNumber == nil){
+            currentNumber = value / pow(10, decimalPlace)
+        }
+        // otherwise, add the value to current number
+        else{
+           // if no decimal was typed
+            if decimalPlace == 0{
+                currentNumber = currentNumber! * 10 + value
+            //otherwise, add value as the last decimal of the number
+            }
+            else{
+                currentNumber = currentNumber! + value / pow(10, decimalPlace)
+                decimalPlace += 1
+            }
+        }
+        // update UI
+        setDusplayValue(number: currentNumber!)
+        
+        
         
     }
     
@@ -81,4 +119,10 @@ class Calculator: ObservableObject{
         
     }
     
+    
+}
+
+
+func pow(_ base:Int, _ exp:Int) -> Double {
+    return pow(Double(base), Double(exp))
 }
